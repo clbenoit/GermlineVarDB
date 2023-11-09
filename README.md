@@ -27,9 +27,9 @@ Will launch GermlineVarDB on the following SQLite database : /home/my_databases/
 
 ## Running Demo app
 
-- `GermlineVarDB::run_demo_app(prefix = "test", db_path = system.file("extdata","testdata", package = "GermlineVarDB"), browser = TRUE)` Will download genome reference file on first call before to start the app
+- `GermlineVarDB::run_demo_app(browser = TRUE)` Will download genome reference file on first call before to start the app
 
-- `GermlineVarDB::run_demo_app(prefix = "test", db_path = system.file("extdata","testdata", package = "GermlineVarDB"))` Skip references download and disable genome browser on demo app
+- `GermlineVarDB::run_demo_app()` Skip references download and disable genome browser on demo app
 
 # Manage your genomic variations database
 
@@ -55,3 +55,4 @@ The GermlineVarDB package comes with a tools suite to manage your database. Here
 - Possibility for the user to upload a list of preferential transcripts, default use the canonical one in sample variants table -> cleaner view
 
 # Troubleshouting
+
