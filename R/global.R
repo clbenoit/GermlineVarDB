@@ -18,5 +18,6 @@ global <- quote({
     DBI::dbWriteTable(con, name = "presets", value = presets, overwrite = TRUE)}
   
   tictoc::toc()
+  
 })
 
