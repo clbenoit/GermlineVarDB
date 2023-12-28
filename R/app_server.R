@@ -82,6 +82,22 @@ app_server <- function(input, output, session) {
   })
   
   # Different sidebars according to selected tab
+  if(DBI::dbExistsTable(conn = con,"manifests_list")){
+    manifests_list <- DBI::dbReadTable(conn = con, name = "manifests_list") %>% filter(user_id == Sys.getenv("SHINYPROXY_USERNAME"))
+    manifests_list <- gsub(paste0("_",Sys.getenv("SHINYPROXY_USERNAME")),"",manifests_list$manifests)
+  }
+  
+  if(DBI::dbExistsTable(conn = con,"presets")){
+    presets <- DBI::dbReadTable(con,"presets") %>% filter(user == Sys.getenv("SHINYPROXY_USERNAME"))
+    presets <- c(presets$name,"None")
+  }
+  
+  transcript_lists <- DBI::dbGetQuery(conn = con, paste0("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%", 
+                                                         Sys.getenv("SHINYPROXY_USERNAME"),"_transcriptlist",
+                                                         "%';"))
+  transcript_lists <- gsub(paste0("_",Sys.getenv("SHINYPROXY_USERNAME")),"",gsub("_transcriptlist","",transcript_lists$name))
+  print(head(transcript_lists))
+
   output$sidebars <- renderUI({
     tagList(
       includeCSS(system.file("extdata","css/custom.css", package = "GermlineVarDB")), # A ajouter ds chaque render UI je pense
@@ -140,16 +156,39 @@ app_server <- function(input, output, session) {
                                                                    numericInput(inputId = "gnomadfrequencynum", label = NULL  ,width = '100%',
                                                                                 step = 0.01,
                                                                                 value = 1, min = 0, max = 1)))),
-                                           selectInput(inputId = "impact", width = '100%', label = "Impact", choices  = c("Low","Moderate","High"),selected = "Low")
+                                           selectInput(inputId = "impact", width = '100%', label = "Impact", choices  = c("Low","Moderate","High"),selected = "Low"),
+                                           selectInput(inputId = "manifest", width = '100%', label = "Manifest", choices  = manifests_list ,selected = "None"),
+                                           selectInput(inputId = "trlist", width = '100%', label = "Select a prefered transcripts list", choices  = transcript_lists ,selected = "None")
+                                           
                                    ),
                                    tabPanel("Phenotype",br(),
                                             "my phenotype selectors"
+                                   ),
+                                   tabPanel("Preset", br(),
+                                            selectInput(inputId = "selectedpreset", width = '100%', label = "Select a filters preset", choices  = presets ,selected = "None")
                                    )
                        )
       ),
       conditionalPanel(condition = 'input.tabsBody=="RunView"',
                        selectInput(inputId = "runviewfilter", width = '100%', label = "MyRunViewParameter", choices  = c("Low","Moderate","High"),selected = "Low"))      
     )
+  })
+  
+  observeEvent(input$selectedpreset,{
+    req(input$selectedpreset)
+    print(paste0("Load preset : ", input$selectedpreset," filters values into analysis window"))
+    if(input$selectedpreset != "None"){
+        print(paste0("reading ", input$selectedpreset, " preset values... (main server)" ))
+        values <- DBI::dbGetQuery(conn = con, paste0("SELECT  allelefrequencynum, coveragenum , qualitynum, gnomadnum , impact, trlist, manifest FROM presets ",
+                                                     "WHERE user = '", Sys.getenv("SHINYPROXY_USERNAME"), "' AND name = '",input$selectedpreset,"' ;"))
+        quality_value(values$qualitynum)
+        gnomad_value(values$gnomadnum)
+        coverage_value(values$coveragenum)
+        allelefrequency_value(values$allelefrequencynum)
+        updateSelectInput(inputId = "impact",selected = values$impact)
+        updateSelectInput(inputId = "manifest",selected = values$trlist)
+        updateSelectInput(inputId = "trlist",selected = values$trlist)
+    }
   })
   
   ## Link sliders and numeric inputs ##
@@ -817,7 +856,7 @@ app_server <- function(input, output, session) {
     same_run_samples <- dbGetQuery(con,paste0("SELECT sample from samples WHERE run = '",input$selectedrun,"'"))
     same_run_samples$sample <- gsub("_.*","",same_run_samples$sample)
     qc_table_run <- sample_table_reactive_values$qc[gsub("_.*","",sample_table_reactive_values$qc$sample) %in% same_run_samples$sample,]
-    print(qc_table_run)
+    #print(qc_table_run)
     if(nrow(qc_table_run) == 0){
       qc_table_run <- data.frame("No data available"  = "No qc information for this run. Please ask your administrator to add it on base.")
     }
