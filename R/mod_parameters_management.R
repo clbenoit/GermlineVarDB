@@ -244,7 +244,7 @@ mod_parameters_management_server <- function(id, conn = NULL, modal = FALSE, rea
                    reactiveValuesInputs$allelefrequencynum,
                    reactiveValuesInputs$coveragenum,
                    reactiveValuesInputs$qualitynum,
-                   reactiveValuesInputs$gnomadnum,
+                   reactiveValuesInputs$gnomadfrequency,
                    reactiveValuesInputs$impact,
                    reactiveValuesInputs$trlist,
                    reactiveValuesInputs$manifest),ignoreNULL = TRUE, {
@@ -255,7 +255,7 @@ mod_parameters_management_server <- function(id, conn = NULL, modal = FALSE, rea
         reactiveValuesInputsInside$allelefrequencynum <- reactiveValuesInputs$allelefrequencynum 
         reactiveValuesInputsInside$coveragenum <- reactiveValuesInputs$coveragenum
         reactiveValuesInputsInside$qualitynum <- reactiveValuesInputs$qualitynum
-        reactiveValuesInputsInside$gnomadnum <- reactiveValuesInputs$gnomadnum
+        reactiveValuesInputsInside$gnomadnum <- reactiveValuesInputs$gnomadfrequency
         reactiveValuesInputsInside$impact <- reactiveValuesInputs$impact
         reactiveValuesInputsInside$trlist <- reactiveValuesInputs$trlist
         reactiveValuesInputsInside$manifest <- reactiveValuesInputs$manifest
