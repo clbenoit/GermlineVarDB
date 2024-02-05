@@ -35,9 +35,9 @@ Will launch GermlineVarDB on the following SQLite database : /home/my_databases/
 
 ## Live demo App
 
-<a href="https://omicsverse.fr/app/GermlineVarDB" target="_blank">See live demo.</a>
+<a href="https://omicsverse.fr/app/GermlineVarDB" target="_blank">See live demo</a>
 
-![](man/figures/example.gif)
+![](inst/app/www/germlinevardb.gif)
 
 # Manage your genomic variations database
 
