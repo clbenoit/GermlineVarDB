@@ -15,7 +15,7 @@ Save locally and edit the [config file](inst/golem-config.yml)
   - **[Optional]** **browser_client_url**: Url to your [JBrowseR](https://github.com/GMOD/JBrowseR) server, files should be accessible from the WebBrowser used to access the Shiny app
   - **cache_directory** : directory to store GermlineVarDB cache files in. Necessary for good app performances. If NULL, a temporary directory will be used and cache will be lost on computer restart
 
-# Running the application
+# Run the application
 
 `GermlineVarDB::run_app(prefix = "yourdatabasename", db_path = "path_to_your_database_location", config = "path_to_your_config_file")`
 
@@ -25,11 +25,19 @@ For example
 
 Will launch GermlineVarDB on the following SQLite database : /home/my_databases/lung_variations.db
 
-## Running Demo app
+# Demo app
+
+## Run demo locally
 
 - `GermlineVarDB::run_demo_app(browser = TRUE)` Will download genome reference file on first call before to start the app
 
 - `GermlineVarDB::run_demo_app()` Skip references download and disable genome browser on demo app
+
+## Live demo App
+
+<a href="https://omicsverse.fr/app/GermlineVarDB" target="_blank">See live demo.</a>
+
+![](man/figures/example.gif)
 
 # Manage your genomic variations database
 
