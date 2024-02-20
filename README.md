@@ -5,7 +5,7 @@ R 4.2.0
 
 # Installation
 
-`devtools::install_github("Plateforme-Data-NGS-CHUGA/GermlineVarDB")`
+`devtools::install_github("clbenoit/GermlineVarDB")`
 
 # Configuration
 
