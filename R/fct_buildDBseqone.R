@@ -9,6 +9,8 @@
 #' @importFrom stringr str_replace_all str_detect str_c str_split
 #' @importFrom tidyr separate unnest gather spread replace_na pivot_wider
 #' @importFrom rlang enquo
+#' @importFrom IRanges stack
+#' @importFrom reshape2 melt
 #' @importFrom promises promise_all future_promise %...>%
 #' @return The return value, if any, from executing the function.
 #'

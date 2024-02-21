@@ -15,7 +15,9 @@
 #' @importFrom stringr str_split str_extract
 #' @importFrom data.table rbindlist
 #' @importFrom plotly renderPlotly
+#' @importFrom bsplus shiny_iconlink bs_embed_tooltip
 #' @importFrom golem get_golem_options
+#' @importFrom cachem cache_disk
 #' @importFrom shiny.router router_server change_page
 app_server <- function(input, output, session) {
   tempdir <- tempdir()

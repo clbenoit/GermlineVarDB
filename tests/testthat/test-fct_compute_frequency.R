@@ -1,6 +1,6 @@
 testthat::test_that("frequency computation works", {
-  GermlineVarDB::compute_frequency(db_path = NULL, prefix = NULL,attribute = "constant_group")
-  #dbDisconnect()
-  #GermlineVarDB::compute_frequency(db_path = "~/testdb/", prefix = "splitted_onco_twofiles",attribute = "run")
+  db_path = system.file("extdata","testdata", package = "GermlineVarDB")
+  prefix = "test"
+  GermlineVarDB::compute_frequency(db_path = db_path, prefix = prefix,attribute = "constant_group")
 })
   

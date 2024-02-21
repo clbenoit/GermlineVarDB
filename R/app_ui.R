@@ -55,7 +55,7 @@ home_page <- div(
                                          style = "position: relative; margin: 10px 10px 10px 10px; display:center-align;"),
                             actionButton(label = NULL, inputId = "godbinfo",icon = icon("database"),
                                          style = "position: relative; margin: 10px 10px 10px 10px; display:center-align;"))
-                    ),
+                  ),
                   dashboardSidebar(width = '25vw', id = "sidebars", 
                                    br(),
                                    fluidPage(column(width = 12,
@@ -122,7 +122,7 @@ home_page <- div(
                                          #   document.getElementById(\"multiqc\").onload = function() {
                                          #     var iframeDocument = document.getElementById('multiqc').contentDocument;
                                          #     var scriptElement = iframeDocument.createElement(\"script\");
-                                         #     scriptElement.innerHTML = \"console.log('Script exécuté dans l\'iframe');\";
+                                         #     scriptElement.innerHTML = \"console.log('Script execute dans l\'iframe');\";
                                          #     iframeDocument.body.appendChild(scriptElement);
                                          #   };
                                          # "))
@@ -136,20 +136,25 @@ home_page <- div(
                                          #     }
                                          #   };
                                          # "))
-                    )),
-                    footer = dashboardFooter(
-                      left = HTML('Support: <b>cbenoit3@chu-grenoble.fr</b>'),
-                      right = HTML('<a href="https://biologie.chu-grenoble.fr/biologie-moleculaire" target="_blank"><b>Plateforme de biologie moléculaire du CHU Grenoble Alpes</b></a>')
-                    )
+                    ))
+    ),
+    footer = tags$footer(class = "main-footer", 
+            HTML("<div class=\"pull-right hidden-xs\">
+                  <a href=\"https://clbenoit.github.io/portfolio/projects/germlinevardb\" target=\"_blank\"><b>About the app</b></a>
+                </div>
+                Support: <b>benoitclement.data@gmail.com</b>"
+                 )
+            )
     )
-  )
   ) # end of  home_page
-  )
+)
+
 fluidPage(
   router_ui(
     route("/", home_page),
     route("parameters", parameters)
-  ))
+  )
+  )
 }
 
 #' Add external Resources to the Application

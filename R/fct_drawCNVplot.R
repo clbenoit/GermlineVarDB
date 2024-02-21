@@ -5,6 +5,7 @@
 #' @import org.Hs.eg.db 
 #' @importFrom dplyr %>% select filter mutate inner_join group_by
 #' @importFrom RSQLite SQLite
+#' @importFrom BiocGenerics grepl
 #' @importFrom plyranges bind_ranges
 #' @importFrom plotly subplot ggplotly
 #' @importFrom GenomicFeatures exonicParts exons
