@@ -140,10 +140,30 @@ server <- function(id, con, appData, main_session) {
       if(input$selectedpreset != "None"){
         print("loading preset")
         loaded_preset <- appData$user_parameters$presets %>% filter(name == input$selectedpreset)
-        updateSelectInput(session = session, inputId = "coverage", selected = loaded_preset$coveragenum)
-        updateSelectInput(session = session, inputId = "quality", selected = loaded_preset$qualitynum)
-        updateSelectInput(session = session, inputId = "allelefrequency", selected = loaded_preset$allelefrequencynum)
-        updateSelectInput(session = session, inputId = "gnomadfrequency", selected = loaded_preset$gnomadfrequencynum)
+        #updateSelectInput(session = session, inputId = "coverage", selected = loaded_preset$coveragenum)
+        main_session$sendCustomMessage(
+          type = ns("coverage"),
+          message = list(
+            value = loaded_preset$coveragenum)
+        ) 
+        #updateSelectInput(session = session, inputId = "quality", selected = loaded_preset$qualitynum)
+        main_session$sendCustomMessage(
+          type = ns("quality"),
+          message = list(
+            value = loaded_preset$qualitynum)
+        )        
+        #updateSelectInput(session = session, inputId = "allelefrequency", selected = loaded_preset$allelefrequencynum)
+        main_session$sendCustomMessage(
+          type = ns("allelefrequency"),
+          message = list(
+            values = loaded_preset$allelefrequencynum)
+        )
+        #updateSelectInput(session = session, inputId = "gnomadfrequency", selected = loaded_preset$gnomadfrequencynum)
+        main_session$sendCustomMessage(
+          type = ns("gnomadfrequency"),
+          message = list(
+            value = loaded_preset$gnomadfrequencynum)
+        )        
         updateSelectInput(session = session, inputId = "impact", selected = loaded_preset$impact)
         updateSelectInput(session = session, inputId = "manifest", selected = loaded_preset$manifest)
         updateSelectInput(session = session, inputId = "trlist", selected = loaded_preset$trlist)

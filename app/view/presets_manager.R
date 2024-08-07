@@ -12,8 +12,8 @@ box::use(
   shiny.router[change_page],
   shinyWidgets[sendSweetAlert],
   readr[read_delim, cols, col_character],
-  DBI[dbExecute]
-  
+  DBI[dbExecute],
+  shinyvalidate[sv_between, sv_gt]
 )
 
 box::use(
@@ -134,7 +134,7 @@ ui <- function(id) {
 }
 
 #' @export
-server <- function(id, appData, genomicData, main_session) {
+server <- function(id, appData, genomicData, main_session, input_validator) {
   moduleServer(id, function(input, output, session) {
     
     observeEvent(input$goroot,{
@@ -143,15 +143,22 @@ server <- function(id, appData, genomicData, main_session) {
     })
     ns <- session$ns
     print("entering mod_parameters_management_server")
-    
+
+    input_validator$add_rule("gnomadnumsetup", sv_between(0, 1))
+    input_validator$add_rule("allelefrequencynumsetupmax", sv_between(0, 1))
+    input_validator$add_rule("allelefrequencynumsetupmin", sv_between(0, 1))
+    input_validator$add_rule("covearagenum", sv_gt(0))
+    input_validator$add_rule("qualitynum", sv_gt(0))
+    input_validator$enable()  
+        
     observeEvent(appData$user_parameters$init_presets_manager, ignoreInit = FALSE, ignoreNULL = FALSE, {
       req(appData$user_parameters$init_presets_manager)
       print("update user metadata (trlist,presetslist,manifestslist...) in mod_parameters_management module")
       updateSelectInput(session = session, inputId = 'selectset', choices = c(appData$user_parameters$presets$name, "In use filter values"), selected = "In use filter values")
       updateSelectInput(session = session, inputId = 'selectlist', choices = appData$user_parameters$transcript_lists)
-      updateSelectInput(session = session, inputId = 'trlistsetup', choices = c(appData$user_parameters$transcript_lists,"None"), selected = c("None"))
+      updateSelectInput(session = session, inputId = 'trlistsetup', choices = c(appData$user_parameters$transcript_lists, "None"), selected = c("None"))
       updateSelectInput(session = session, inputId = 'selectManifest', choices = appData$user_parameters$manifests_list)
-      updateSelectInput(session = session, inputId = 'manifestlistsetup', choices = c(appData$user_parameters$manifests_list,"None"), selected = c("None"))
+      updateSelectInput(session = session, inputId = 'manifestlistsetup', choices = c(appData$user_parameters$manifests_list, "None"), selected = c("None"))
     })
     
     observeEvent(input$confirmadd, ignoreNULL = TRUE, {  
@@ -233,7 +240,7 @@ server <- function(id, appData, genomicData, main_session) {
                    appData$filters$manifest#,
                    ), ignoreNULL = TRUE, {
                      req(input$selectset)
-                     req(appData$user_parameters$presets)
+                     #req(appData$user_parameters$presets)
                      if(input$selectset == 'In use filter values'){
                        print('Load In use filter values')
                        reactiveValuesInputsInside$allelefrequencynum <- appData$filters$allelefrequency_value
@@ -245,7 +252,9 @@ server <- function(id, appData, genomicData, main_session) {
                        reactiveValuesInputsInside$manifest <- appData$filters$manifest
                      } else {
                        print(paste('Load ', input$selectset, ' preset filters values (inside module)'))
-                       presets <- dbReadTable(appData$con, "presets")
+                       req(appData$user_parameters$presets)
+                       presets <- appData$user_parameters$presets
+                       #presets <- dbReadTable(appData$con, "presets")
                        current_preset <- appData$user_parameters$presets %>% filter(name  == input$selectset)
                        if(current_preset$allelefrequencynum != "Emptypreset"){
                          values <- dbGetQuery(conn = appData$con,

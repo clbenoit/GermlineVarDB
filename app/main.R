@@ -10,7 +10,8 @@ box::use(
   DBI[dbConnect],
   RSQLite[SQLite],
   shinydashboard[dashboardPage, dashboardHeader, dashboardSidebar, dashboardBody, infoBox],
-  shinydashboardPlus[boxDropdown, boxDropdownItem]
+  shinydashboardPlus[boxDropdown, boxDropdownItem],
+  shinyvalidate[InputValidator]
 )
 
 box::use(
@@ -77,10 +78,6 @@ ui <- function(id) {
   )
 }
 
-box::use(
-  app/view/react[sliderNumeric],
-)
-
 #' @export
 server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -138,6 +135,8 @@ server <- function(id) {
       change_page('presets_manager_page')
     })
     
+    iv <- InputValidator$new()
+    
     sidebar$server("sidebar", appData = appDataManager, main_session = session)
     patient_view$server("patient_view", appData = appDataManager, genomicData = genomicDataManager, main_session = session)
     variant_view$server("variant_view", appData = appDataManager, genomicData = genomicDataManager, main_session = session)
@@ -150,7 +149,7 @@ server <- function(id) {
       appDataManager$selectors$tab <- input$tabsBody
     })
     
-    presets_manager$server("presets_manager", appData = appDataManager)
+    presets_manager$server("presets_manager", appData = appDataManager, input_validator = iv)
 
     
     observeEvent(input$godbinfo,{ 

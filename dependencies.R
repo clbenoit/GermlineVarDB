@@ -1,3 +1,5 @@
 # This file allows packrat (used by rsconnect during deployment) to pick up dependencies.
+library(readr)
 library(rhino)
 library(shiny.react)
+library(shinyvalidate)
