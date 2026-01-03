@@ -1,6 +1,6 @@
 # :clipboard: Requirements
 
-R 4.2.0
+R 4.5.2
 
 # :hammer_and_wrench: Installation
 

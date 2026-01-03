@@ -9,7 +9,7 @@ default:
   multiqc: /home/ptngs/Git/multiqc
   db_path: "app/data/testdata"
   prefix: "test"
-  app_title: "My App"
+  app_title: "GermlineVarDB Demo"
 
 production:
   genome_version: "hg19"
@@ -22,7 +22,7 @@ production:
   genome_ref: "genome reference file name"
   db_path: "edit_dp_path"
   prefix: "edit_db_prefix"
-  
+
 demo:
   genome_version: "hg19"
   transcripts:  "refseq"
